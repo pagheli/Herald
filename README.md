@@ -1,8 +1,6 @@
 # Précis
 
-A personal, self-updating news feed: a feed UI with per-article Read, Skip,
-Save, and Archive, organized by category, that tops itself up with fresh
-stories once a day instead of replacing what you haven't gotten to yet.
+Most news feeds forget you the moment you close the tab. Précis doesn't. Every Read, Skip, and Save writes itself back into the page immediately, so the next visit picks up exactly where the last one left off. A daily pass adds new stories on top of the pile, never touching what you haven't gotten to, and prunes the read-and-skipped backlog on a cap while anything you've saved stays untouched, indefinitely.
 
 This repo has two independent ways to run it:
 
@@ -13,10 +11,7 @@ This repo has two independent ways to run it:
 | Persistence | The `artifact` runtime capability (saves instantly, synced) | `localStorage` in one browser (no sync) |
 | Setup | Publish a template, schedule a prompt | Open `index.html` |
 
-Pick `skill/` if you want the original, fully-automated version and already
-use Claude. Pick `web/` if you want the same interface with zero
-Claude dependency and are fine doing the "find new articles" part yourself
-or with your own script.
+> Pick `skill/` if you want the original, fully-automated version and already use Claude. Pick `web/` if you want the same interface with zero Claude dependency and are fine doing the "find new articles" part yourself or with your own script.
 
 ## `skill/` — the Claude Artifact version
 
@@ -31,15 +26,12 @@ or with your own script.
 
 ## Design
 
-Six built-in categories (technology, stocks, healthcare, biotech, startups,
-telecom), each with its own accent color used consistently across the
-category filter, the article card border tint, and the tag label. Read and
-Skip move an article to the Archive tab (Skip additionally tells the daily
-fetch to deprioritize similar stories); Save bookmarks an article
-independently of its read state and exempts it from the Archive's size cap.
-Both light and dark color schemes are defined, following the OS preference
-by default.
+- So far, `six` built-in categories (technology, stocks, healthcare, biotech, startups,
+telecom), each with its own accent color used consistently across the category filter, the article card border tint, and the tag label. 
+- `Read` and `Skip` move an article to the Archive tab (`Skip` additionally tells the daily fetch to deprioritize similar stories).
+- `Save` bookmarks an article independently of its read state and exempts it from the Archive's size cap.
+Both light and dark color schemes are defined, following the OS preference by default.
 
 ## License
 
-MIT — see `LICENSE`.
+MIT — see [`LICENSE`](/LICENSE).
