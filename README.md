@@ -13,13 +13,13 @@ This repo has two independent ways to run it:
 
 > Pick `skill/` if you want the original, fully-automated version and already use Claude. Pick `web/` if you want the same interface with zero Claude dependency and are fine doing the "find new articles" part yourself or with your own script.
 
-## Claude Artifact version
+### Claude Artifact version
 
 - `SKILL.md` — what to publish and how to wire up the daily fetch.
 - `template.html` — the starter page to publish as a Claude Artifact.
 - `daily-fetch-prompt.md` — the scheduled-task prompt that keeps it current.
 
-## Standalone version
+### Standalone version
 
 - `index.html` — a single self-contained page, no build step, no server.
 - `README.md` — how to run it and the article-data schema.
