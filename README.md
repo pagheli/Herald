@@ -13,20 +13,20 @@ This repo has two independent ways to run it:
 
 > Pick `skill/` if you want the original, fully-automated version and already use Claude. Pick `web/` if you want the same interface with zero Claude dependency and are fine doing the "find new articles" part yourself or with your own script.
 
-## `skill/` — the Claude Artifact version
+## Claude Artifact version
 
 - `SKILL.md` — what to publish and how to wire up the daily fetch.
 - `template.html` — the starter page to publish as a Claude Artifact.
 - `daily-fetch-prompt.md` — the scheduled-task prompt that keeps it current.
 
-## `web/` — the standalone version
+## Standalone version
 
 - `index.html` — a single self-contained page, no build step, no server.
 - `README.md` — how to run it and the article-data schema.
 
 ## Design
 
-- So far, `six` built-in categories (technology, stocks, healthcare, biotech, startups,
+- So far, six built-in categories (technology, stocks, healthcare, biotech, startups,
 telecom), each with its own accent color used consistently across the category filter, the article card border tint, and the tag label. 
 - `Read` and `Skip` move an article to the Archive tab (`Skip` additionally tells the daily fetch to deprioritize similar stories).
 - `Save` bookmarks an article independently of its read state and exempts it from the Archive's size cap.
