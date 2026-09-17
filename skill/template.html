@@ -1,0 +1,590 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Précis</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet"><style>
+  :root {
+    --bg: #F1F4F2;
+    --surface: #FFFFFF;
+    --ink: #121A17;
+    --ink-soft: #52605A;
+    --ink-faint: #8A968F;
+    --accent: #1B6E63;
+    --accent-ink: #FFFFFF;
+    --down: #A0463A;
+    --line: #DCE3DF;
+    --tech: #2E5FA3;
+    --stocks: #9C7A17;
+    --health: #B23A5B;
+    --biotech: #6E4BA5;
+    --startup: #C05621;
+    --telecom: #1C8CA8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0E1613;
+      --surface: #131E1A;
+      --ink: #E7EEEA;
+      --ink-soft: #A8B5AE;
+      --ink-faint: #6C7B73;
+      --accent: #3FA491;
+      --accent-ink: #06120F;
+      --down: #D97C6E;
+      --line: #223029;
+      --tech: #7FACEA;
+      --stocks: #D8B24A;
+      --health: #E38BA1;
+      --biotech: #B79AE8;
+      --startup: #E6975A;
+      --telecom: #6FD1E8;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0E1613;
+    --surface: #131E1A;
+    --ink: #E7EEEA;
+    --ink-soft: #A8B5AE;
+    --ink-faint: #6C7B73;
+    --accent: #3FA491;
+    --accent-ink: #06120F;
+    --down: #D97C6E;
+    --line: #223029;
+    --tech: #7FACEA;
+    --stocks: #D8B24A;
+    --health: #E38BA1;
+    --biotech: #B79AE8;
+    --startup: #E6975A;
+    --telecom: #6FD1E8;
+  }
+
+  * { box-sizing: border-box; }
+  html { text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Jost', -apple-system, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .fb-btn, .undo-btn { transition: background-color .15s ease, color .15s ease, border-color .15s ease; }
+  }
+
+  a { color: inherit; }
+
+  .wrap { max-width: 800px; margin: 0 auto; padding: 0 20px 96px; }
+
+  header.masthead {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--bg);
+    padding: 28px 0 16px;
+    margin-bottom: 8px;
+  }
+  h1.wordmark {
+    font-family: 'Jost', 'Century Gothic', 'Segoe UI', sans-serif;
+    font-weight: 700;
+    font-size: 34px;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin: 0 0 4px;
+    text-wrap: balance;
+  }
+  .tagline {
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin: 0 0 16px;
+    letter-spacing: .01em;
+  }
+  .meta-row {
+    font-family: 'Jost', ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .filters {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    font-family: 'Jost', ui-monospace, monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink-soft);
+    padding: 6px 10px;
+    cursor: pointer;
+  }
+  .filter-btn:hover { border-color: var(--ink-faint); }
+  .filter-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .filter-btn[data-active="true"] {
+    color: var(--surface);
+    background: var(--cat-color, var(--accent));
+    border-color: var(--cat-color, var(--accent));
+  }
+  .filter-btn[data-cat="tech"] { --cat-color: var(--tech); }
+  .filter-btn[data-cat="stocks"] { --cat-color: var(--stocks); }
+  .filter-btn[data-cat="health"] { --cat-color: var(--health); }
+  .filter-btn[data-cat="biotech"] { --cat-color: var(--biotech); }
+  .filter-btn[data-cat="startup"] { --cat-color: var(--startup); }
+  .filter-btn[data-cat="telecom"] { --cat-color: var(--telecom); }
+  .filter-btn[data-cat="pinned"] { margin-left: auto; }
+  .filter-select-wrap {
+    position: relative;
+    padding: 6px 24px 6px 10px;
+  }
+  .filter-select-wrap::after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: translateY(-70%) rotate(45deg);
+    pointer-events: none;
+  }
+  .filter-select-wrap:focus-within {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+  .filter-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent;
+    border: none;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .feed { display: flex; flex-direction: column; }
+
+  .item {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+    margin-bottom: 14px;
+    opacity: 1;
+    max-height: 800px;
+    overflow: hidden;
+    transition: opacity .5s ease 5s, max-height .5s ease 5s, margin-bottom .5s ease 5s;
+  }
+  .item[data-category="tech"]     { --cat-color: var(--tech); }
+  .item[data-category="stocks"]   { --cat-color: var(--stocks); }
+  .item[data-category="health"]   { --cat-color: var(--health); }
+  .item[data-category="biotech"]  { --cat-color: var(--biotech); }
+  .item[data-category="startup"]  { --cat-color: var(--startup); }
+  .item[data-category="telecom"]  { --cat-color: var(--telecom); }
+
+  .item[data-archived="true"] {
+    opacity: 0;
+    max-height: 0;
+    margin-bottom: 0;
+  }
+  body[data-local-filter="archive"] .item[data-archived="true"],
+  body[data-local-filter="pinned"] .item[data-archived="true"][data-pinned="true"] {
+    opacity: 1;
+    max-height: 800px;
+    margin-bottom: 14px;
+    transition-delay: 0s;
+  }
+
+  .item-card {
+    flex: 1;
+    min-width: 0;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--cat-color, var(--line)) 10%, transparent);
+    padding: 18px 20px;
+    transition: border-color .2s ease;
+  }
+
+  .item-meta {
+    font-family: 'Jost', ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .item-meta .tag {
+    color: var(--cat-color);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .04em;
+  }
+  .archived-status {
+    display: none;
+    color: var(--ink-faint);
+    font-weight: 500;
+    letter-spacing: .04em;
+  }
+  .archived-status::before { content: "\00b7\0020"; }
+  .archived-status::after { content: "Skipped"; }
+  .item[data-feedback="read"] .archived-status::after { content: "Read"; }
+  body[data-local-filter="archive"] .item[data-archived="true"] .archived-status,
+  body[data-local-filter="pinned"] .item[data-archived="true"][data-pinned="true"] .archived-status { display: inline; }
+
+  .pin-indicator { display: none; margin-left: 2px; }
+  .item[data-pinned="true"] .pin-indicator { display: inline-flex; vertical-align: middle; }
+  .pin-indicator svg path { fill: currentColor; stroke: none; }
+
+  .item-title {
+    font-family: 'Jost', 'Century Gothic', 'Segoe UI', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.28;
+    margin: 0 0 8px;
+    text-wrap: balance;
+  }
+  .item-title a { text-decoration: none; }
+  .item-title a:hover { text-decoration: underline; text-decoration-color: var(--cat-color); text-underline-offset: 3px; }
+  .item-title a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .item-summary {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink);
+    margin: 0 0 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .item-summary.expanded {
+    -webkit-line-clamp: unset;
+    overflow: visible;
+  }
+
+  .expand-btn {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    display: inline-flex;
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--accent);
+    padding: 3px 10px;
+    margin: 0 0 12px;
+    cursor: pointer;
+  }
+  .expand-btn:hover { border-color: var(--accent); }
+
+  .item-actions {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .fb-btn, .undo-btn, .pin-btn {
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink-soft);
+    padding: 6px 10px;
+    cursor: pointer;
+  }
+  .fb-btn:hover, .undo-btn:hover, .pin-btn:hover { border-color: var(--ink-faint); }
+  .fb-btn:focus-visible, .undo-btn:focus-visible, .pin-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .fb-btn[data-fb="read"].active { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+  .fb-btn[data-fb="skip"].active { background: var(--down); border-color: var(--down); color: var(--accent-ink); }
+
+  .item[data-archived="true"] .fb-btn { display: none; }
+  .undo-btn { display: none; border-color: var(--cat-color, var(--line)); color: var(--cat-color, var(--ink-soft)); }
+  .item[data-archived="true"] .undo-btn { display: inline-flex; }
+  .undo-btn:hover { background: var(--cat-color, var(--line)); color: var(--surface); }
+
+  .pin-btn.active { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .pin-btn.active:hover { border-color: var(--accent); }
+  .pin-icon path { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
+  .pin-btn.active .pin-icon path { fill: currentColor; stroke: none; }
+
+  footer.notes {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--ink-faint);
+    line-height: 1.6;
+  }
+  footer.notes strong { color: var(--ink-soft); }
+
+  body[data-local-filter] .item { display: none; }
+  body:not([data-local-filter]) .item,
+  body[data-local-filter="all"] .item { display: flex; }
+  body[data-local-filter="tech"] .item[data-category="tech"],
+  body[data-local-filter="stocks"] .item[data-category="stocks"],
+  body[data-local-filter="health"] .item[data-category="health"],
+  body[data-local-filter="biotech"] .item[data-category="biotech"],
+  body[data-local-filter="startup"] .item[data-category="startup"],
+  body[data-local-filter="telecom"] .item[data-category="telecom"] { display: flex; }
+  body[data-local-filter="archive"] .item[data-archived="true"] { display: flex; }
+  body[data-local-filter="pinned"] .item[data-pinned="true"] { display: flex; }
+</style></head><body>
+<div class="wrap">
+  <header class="masthead">
+    <h1 class="wordmark">Précis</h1>
+    <p class="tagline">Signal over noise.</p>
+    <div class="meta-row">
+      <span>Updated — (will be set on first scheduled run)</span>
+    </div>
+    <nav class="filters" id="filters">
+      <button class="filter-btn" data-cat="all" data-active="true" onclick="setFilter('all', this)">All</button>
+      <span class="filter-btn filter-select-wrap">
+        <select class="filter-select" id="category-select" aria-label="Category" onchange="setFilter(this.value, this.parentElement)">
+          <option value="" disabled selected>Category</option>
+          <option value="biotech">Biotech</option>
+          <option value="health">Healthcare</option>
+          <option value="startup">Startups</option>
+          <option value="stocks">Stocks</option>
+          <option value="tech">Technology</option>
+          <option value="telecom">Telecom</option>
+        </select>
+      </span>
+      <button class="filter-btn" data-cat="pinned" onclick="setFilter('pinned', this)">Saved</button>
+      <button class="filter-btn" data-cat="archive" onclick="setFilter('archive', this)">Archive</button>
+    </nav>
+  </header>
+
+  <main class="feed" id="feed">
+
+    <article class="item" data-id="welcome001" data-category="tech" data-feedback="" data-archived="false" data-pinned="false">
+      <div class="item-card">
+        <div class="item-meta"><span class="tag">Technology</span><span>&middot;</span><span>Précis</span><span>&middot;</span><time>Day 1</time><span class="archived-status"></span><span class="pin-indicator"><svg viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></span></div>
+        <h2 class="item-title"><a href="https://github.com/pagheli/Precis" target="_blank" rel="noopener">Welcome to your Précis — this card is a placeholder</a></h2>
+        <p class="item-summary">This is a starter article so the layout has something to show on first publish. Point a scheduled Claude session at this artifact's URL using the daily-fetch-prompt in this skill, and it will read this page, fold in real stories, and republish over it — this placeholder will get folded into the Archive the first time that runs, or you can just click Skip or Read on it yourself right now.</p>
+        <button class="expand-btn" onclick="toggleExpand(this)">Read more</button>
+        <div class="item-actions">
+          <button class="pin-btn" aria-label="Save for later" onclick="togglePin('welcome001')"><svg class="pin-icon" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><span class="pin-label">Save</span></button>
+          <button class="fb-btn" data-fb="skip" aria-label="Skip — fewer like this" onclick="setFeedback('welcome001','skip')">&#10005; Skip</button>
+          <button class="undo-btn" aria-label="Undo" onclick="undoFeedback('welcome001')">&#8634; Undo</button>
+          <button class="fb-btn" data-fb="read" aria-label="Mark as read" onclick="setFeedback('welcome001','read')">&#10003; Read</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="item" data-id="welcome002" data-category="startup" data-feedback="" data-archived="false" data-pinned="false">
+      <div class="item-card">
+        <div class="item-meta"><span class="tag">Startups</span><span>&middot;</span><span>Précis</span><span>&middot;</span><time>Day 1</time><span class="archived-status"></span><span class="pin-indicator"><svg viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></span></div>
+        <h2 class="item-title"><a href="https://github.com/pagheli/Precis" target="_blank" rel="noopener">Categories, filters, and the Saved/Archive tabs all work already</a></h2>
+        <p class="item-summary">Try Save, Skip, Read, and Undo on these two starter cards, then check the Category dropdown and the Saved/Archive buttons in the nav. Every click calls this page's own artifact.publish() and saves immediately — no scheduled run required for that part.</p>
+        <button class="expand-btn" onclick="toggleExpand(this)">Read more</button>
+        <div class="item-actions">
+          <button class="pin-btn" aria-label="Save for later" onclick="togglePin('welcome002')"><svg class="pin-icon" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><span class="pin-label">Save</span></button>
+          <button class="fb-btn" data-fb="skip" aria-label="Skip — fewer like this" onclick="setFeedback('welcome002','skip')">&#10005; Skip</button>
+          <button class="undo-btn" aria-label="Undo" onclick="undoFeedback('welcome002')">&#8634; Undo</button>
+          <button class="fb-btn" data-fb="read" aria-label="Mark as read" onclick="setFeedback('welcome002','read')">&#10003; Read</button>
+        </div>
+      </div>
+    </article>
+
+</main>
+
+  <footer class="notes">
+    <p id="feedback-log" style="margin-top:10px; font-family:'Jost', ui-monospace, monospace; font-size:11px;">Archived so far &mdash; Read: none. Skipped (used to tune future editions): none.</p>
+    <p id="sync-status" style="margin-top:4px; font-family:'Jost', ui-monospace, monospace; font-size:10px; color:var(--down);"></p>
+  </footer>
+</div>
+
+<script type="application/json" id="head-style-src">"<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link href=\"https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap\" rel=\"stylesheet\"><style>\n  :root {\n    --bg: #F1F4F2;\n    --surface: #FFFFFF;\n    --ink: #121A17;\n    --ink-soft: #52605A;\n    --ink-faint: #8A968F;\n    --accent: #1B6E63;\n    --accent-ink: #FFFFFF;\n    --down: #A0463A;\n    --line: #DCE3DF;\n    --tech: #2E5FA3;\n    --stocks: #9C7A17;\n    --health: #B23A5B;\n    --biotech: #6E4BA5;\n    --startup: #C05621;\n    --telecom: #1C8CA8;\n  }\n  @media (prefers-color-scheme: dark) {\n    :root:not([data-theme=\"light\"]) {\n      --bg: #0E1613;\n      --surface: #131E1A;\n      --ink: #E7EEEA;\n      --ink-soft: #A8B5AE;\n      --ink-faint: #6C7B73;\n      --accent: #3FA491;\n      --accent-ink: #06120F;\n      --down: #D97C6E;\n      --line: #223029;\n      --tech: #7FACEA;\n      --stocks: #D8B24A;\n      --health: #E38BA1;\n      --biotech: #B79AE8;\n      --startup: #E6975A;\n      --telecom: #6FD1E8;\n    }\n  }\n  :root[data-theme=\"dark\"] {\n    --bg: #0E1613;\n    --surface: #131E1A;\n    --ink: #E7EEEA;\n    --ink-soft: #A8B5AE;\n    --ink-faint: #6C7B73;\n    --accent: #3FA491;\n    --accent-ink: #06120F;\n    --down: #D97C6E;\n    --line: #223029;\n    --tech: #7FACEA;\n    --stocks: #D8B24A;\n    --health: #E38BA1;\n    --biotech: #B79AE8;\n    --startup: #E6975A;\n    --telecom: #6FD1E8;\n  }\n\n  * { box-sizing: border-box; }\n  html { text-size-adjust: 100%; }\n  body {\n    margin: 0;\n    background: var(--bg);\n    color: var(--ink);\n    font-family: 'Jost', -apple-system, 'Segoe UI', sans-serif;\n    -webkit-font-smoothing: antialiased;\n  }\n  @media (prefers-reduced-motion: no-preference) {\n    .fb-btn, .undo-btn { transition: background-color .15s ease, color .15s ease, border-color .15s ease; }\n  }\n\n  a { color: inherit; }\n\n  .wrap { max-width: 800px; margin: 0 auto; padding: 0 20px 96px; }\n\n  header.masthead {\n    position: sticky;\n    top: 0;\n    z-index: 5;\n    background: var(--bg);\n    padding: 28px 0 16px;\n    margin-bottom: 8px;\n  }\n  h1.wordmark {\n    font-family: 'Jost', 'Century Gothic', 'Segoe UI', sans-serif;\n    font-weight: 700;\n    font-size: 34px;\n    line-height: 1.05;\n    letter-spacing: -0.01em;\n    margin: 0 0 4px;\n    text-wrap: balance;\n  }\n  .tagline {\n    font-size: 11px;\n    color: var(--ink-faint);\n    margin: 0 0 16px;\n    letter-spacing: .01em;\n  }\n  .meta-row {\n    font-family: 'Jost', ui-monospace, monospace;\n    font-size: 11px;\n    color: var(--ink-faint);\n    display: flex;\n    gap: 8px;\n    align-items: center;\n    flex-wrap: wrap;\n    margin-bottom: 16px;\n  }\n\n  .filters {\n    display: flex;\n    gap: 6px;\n    flex-wrap: wrap;\n  }\n  .filter-btn {\n    font-family: 'Jost', ui-monospace, monospace;\n    font-size: 12px;\n    font-weight: 600;\n    letter-spacing: .04em;\n    background: transparent;\n    border: 1px solid var(--line);\n    border-radius: 999px;\n    color: var(--ink-soft);\n    padding: 6px 10px;\n    cursor: pointer;\n  }\n  .filter-btn:hover { border-color: var(--ink-faint); }\n  .filter-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }\n  .filter-btn[data-active=\"true\"] {\n    color: var(--surface);\n    background: var(--cat-color, var(--accent));\n    border-color: var(--cat-color, var(--accent));\n  }\n  .filter-btn[data-cat=\"tech\"] { --cat-color: var(--tech); }\n  .filter-btn[data-cat=\"stocks\"] { --cat-color: var(--stocks); }\n  .filter-btn[data-cat=\"health\"] { --cat-color: var(--health); }\n  .filter-btn[data-cat=\"biotech\"] { --cat-color: var(--biotech); }\n  .filter-btn[data-cat=\"startup\"] { --cat-color: var(--startup); }\n  .filter-btn[data-cat=\"telecom\"] { --cat-color: var(--telecom); }\n  .filter-btn[data-cat=\"pinned\"] { margin-left: auto; }\n  .filter-select-wrap {\n    position: relative;\n    padding: 6px 24px 6px 10px;\n  }\n  .filter-select-wrap::after {\n    content: \"\";\n    position: absolute;\n    right: 10px;\n    top: 50%;\n    width: 6px;\n    height: 6px;\n    border-right: 1.5px solid currentColor;\n    border-bottom: 1.5px solid currentColor;\n    transform: translateY(-70%) rotate(45deg);\n    pointer-events: none;\n  }\n  .filter-select-wrap:focus-within {\n    outline: 2px solid var(--accent);\n    outline-offset: 1px;\n  }\n  .filter-select {\n    appearance: none;\n    -webkit-appearance: none;\n    -moz-appearance: none;\n    background: transparent;\n    border: none;\n    color: inherit;\n    font: inherit;\n    letter-spacing: inherit;\n    padding: 0;\n    margin: 0;\n    cursor: pointer;\n    outline: none;\n  }\n\n  .feed { display: flex; flex-direction: column; }\n\n  .item {\n    display: flex;\n    align-items: stretch;\n    gap: 10px;\n    margin-bottom: 14px;\n    opacity: 1;\n    max-height: 800px;\n    overflow: hidden;\n    transition: opacity .5s ease 5s, max-height .5s ease 5s, margin-bottom .5s ease 5s;\n  }\n  .item[data-category=\"tech\"]     { --cat-color: var(--tech); }\n  .item[data-category=\"stocks\"]   { --cat-color: var(--stocks); }\n  .item[data-category=\"health\"]   { --cat-color: var(--health); }\n  .item[data-category=\"biotech\"]  { --cat-color: var(--biotech); }\n  .item[data-category=\"startup\"]  { --cat-color: var(--startup); }\n  .item[data-category=\"telecom\"]  { --cat-color: var(--telecom); }\n\n  .item[data-archived=\"true\"] {\n    opacity: 0;\n    max-height: 0;\n    margin-bottom: 0;\n  }\n  body[data-local-filter=\"archive\"] .item[data-archived=\"true\"],\n  body[data-local-filter=\"pinned\"] .item[data-archived=\"true\"][data-pinned=\"true\"] {\n    opacity: 1;\n    max-height: 800px;\n    margin-bottom: 14px;\n    transition-delay: 0s;\n  }\n\n  .item-card {\n    flex: 1;\n    min-width: 0;\n    border: 1px solid var(--line);\n    border-radius: 16px;\n    background: color-mix(in srgb, var(--cat-color, var(--line)) 10%, transparent);\n    padding: 18px 20px;\n    transition: border-color .2s ease;\n  }\n\n  .item-meta {\n    font-family: 'Jost', ui-monospace, monospace;\n    font-size: 11px;\n    color: var(--ink-faint);\n    display: flex;\n    gap: 6px;\n    align-items: center;\n    margin-bottom: 6px;\n  }\n  .item-meta .tag {\n    color: var(--cat-color);\n    font-size: 12px;\n    font-weight: 600;\n    letter-spacing: .04em;\n  }\n  .archived-status {\n    display: none;\n    color: var(--ink-faint);\n    font-weight: 500;\n    letter-spacing: .04em;\n  }\n  .archived-status::before { content: \"\\00b7\\0020\"; }\n  .archived-status::after { content: \"Skipped\"; }\n  .item[data-feedback=\"read\"] .archived-status::after { content: \"Read\"; }\n  body[data-local-filter=\"archive\"] .item[data-archived=\"true\"] .archived-status,\n  body[data-local-filter=\"pinned\"] .item[data-archived=\"true\"][data-pinned=\"true\"] .archived-status { display: inline; }\n\n  .pin-indicator { display: none; margin-left: 2px; }\n  .item[data-pinned=\"true\"] .pin-indicator { display: inline-flex; vertical-align: middle; }\n  .pin-indicator svg path { fill: currentColor; stroke: none; }\n\n  .item-title {\n    font-family: 'Jost', 'Century Gothic', 'Segoe UI', sans-serif;\n    font-weight: 600;\n    font-size: 20px;\n    line-height: 1.28;\n    margin: 0 0 8px;\n    text-wrap: balance;\n  }\n  .item-title a { text-decoration: none; }\n  .item-title a:hover { text-decoration: underline; text-decoration-color: var(--cat-color); text-underline-offset: 3px; }\n  .item-title a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }\n\n  .item-summary {\n    font-size: 15px;\n    line-height: 1.55;\n    color: var(--ink);\n    margin: 0 0 4px;\n    display: -webkit-box;\n    -webkit-line-clamp: 3;\n    -webkit-box-orient: vertical;\n    overflow: hidden;\n  }\n  .item-summary.expanded {\n    -webkit-line-clamp: unset;\n    overflow: visible;\n  }\n\n  .expand-btn {\n    font-family: 'Jost', sans-serif;\n    font-size: 11px;\n    font-weight: 600;\n    display: inline-flex;\n    background: transparent;\n    border: 1px solid var(--line);\n    border-radius: 999px;\n    color: var(--accent);\n    padding: 3px 10px;\n    margin: 0 0 12px;\n    cursor: pointer;\n  }\n  .expand-btn:hover { border-color: var(--accent); }\n\n  .item-actions {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: wrap;\n    justify-content: flex-end;\n    align-items: center;\n    gap: 6px;\n    margin-top: 12px;\n  }\n\n  .fb-btn, .undo-btn, .pin-btn {\n    font-family: 'Jost', sans-serif;\n    font-size: 12px;\n    font-weight: 400;\n    display: inline-flex;\n    align-items: center;\n    gap: 5px;\n    background: transparent;\n    border: 1px solid var(--line);\n    border-radius: 999px;\n    color: var(--ink-soft);\n    padding: 6px 10px;\n    cursor: pointer;\n  }\n  .fb-btn:hover, .undo-btn:hover, .pin-btn:hover { border-color: var(--ink-faint); }\n  .fb-btn:focus-visible, .undo-btn:focus-visible, .pin-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }\n  .fb-btn[data-fb=\"read\"].active { background: var(--ink); border-color: var(--ink); color: var(--bg); }\n  .fb-btn[data-fb=\"skip\"].active { background: var(--down); border-color: var(--down); color: var(--accent-ink); }\n\n  .item[data-archived=\"true\"] .fb-btn { display: none; }\n  .undo-btn { display: none; border-color: var(--cat-color, var(--line)); color: var(--cat-color, var(--ink-soft)); }\n  .item[data-archived=\"true\"] .undo-btn { display: inline-flex; }\n  .undo-btn:hover { background: var(--cat-color, var(--line)); color: var(--surface); }\n\n  .pin-btn.active { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }\n  .pin-btn.active:hover { border-color: var(--accent); }\n  .pin-icon path { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }\n  .pin-btn.active .pin-icon path { fill: currentColor; stroke: none; }\n\n  footer.notes {\n    margin-top: 40px;\n    padding-top: 20px;\n    border-top: 1px solid var(--line);\n    font-size: 13px;\n    color: var(--ink-faint);\n    line-height: 1.6;\n  }\n  footer.notes strong { color: var(--ink-soft); }\n\n  body[data-local-filter] .item { display: none; }\n  body:not([data-local-filter]) .item,\n  body[data-local-filter=\"all\"] .item { display: flex; }\n  body[data-local-filter=\"tech\"] .item[data-category=\"tech\"],\n  body[data-local-filter=\"stocks\"] .item[data-category=\"stocks\"],\n  body[data-local-filter=\"health\"] .item[data-category=\"health\"],\n  body[data-local-filter=\"biotech\"] .item[data-category=\"biotech\"],\n  body[data-local-filter=\"startup\"] .item[data-category=\"startup\"],\n  body[data-local-filter=\"telecom\"] .item[data-category=\"telecom\"] { display: flex; }\n  body[data-local-filter=\"archive\"] .item[data-archived=\"true\"] { display: flex; }\n  body[data-local-filter=\"pinned\"] .item[data-pinned=\"true\"] { display: flex; }\n</style>"<\/script>
+<script type="application/json" id="articles-data">[{"id": "welcome001", "category": "tech", "tag": "Technology", "source": "Pr\u00e9cis", "date": "Day 1", "title": "Welcome to your Pr\u00e9cis \u2014 this card is a placeholder", "url": "https://github.com/pagheli/Precis", "summary": "This is a starter article so the layout has something to show on first publish. Point a scheduled Claude session at this artifact's URL using the daily-fetch-prompt in this skill, and it will read this page, fold in real stories, and republish over it \u2014 this placeholder will get folded into the Archive the first time that runs, or you can just click Skip or Read on it yourself right now.", "feedback": "", "archived": false, "pinned": false}, {"id": "welcome002", "category": "startup", "tag": "Startups", "source": "Pr\u00e9cis", "date": "Day 1", "title": "Categories, filters, and the Saved/Archive tabs all work already", "url": "https://github.com/pagheli/Precis", "summary": "Try Save, Skip, Read, and Undo on these two starter cards, then check the Category dropdown and the Saved/Archive buttons in the nav. Every click calls this page's own artifact.publish() and saves immediately \u2014 no scheduled run required for that part.", "feedback": "", "archived": false, "pinned": false}]<\/script>
+<script id="app-logic">function findArticle(id) { return ARTICLES.find(function(a){ return a.id === id; }); }
+
+function applyDom(a) {
+  var el = document.querySelector('.item[data-id="' + a.id + '"]');
+  if (!el) return;
+  el.setAttribute('data-feedback', a.feedback);
+  el.setAttribute('data-archived', String(a.archived));
+  el.setAttribute('data-pinned', String(a.pinned));
+  var readBtn = el.querySelector('.fb-btn[data-fb="read"]');
+  var skipBtn = el.querySelector('.fb-btn[data-fb="skip"]');
+  if (readBtn) readBtn.classList.toggle('active', a.feedback === 'read');
+  if (skipBtn) skipBtn.classList.toggle('active', a.feedback === 'skip');
+  var pinBtn = el.querySelector('.pin-btn');
+  if (pinBtn) {
+    pinBtn.classList.toggle('active', !!a.pinned);
+    var pinLabel = pinBtn.querySelector('.pin-label');
+    if (pinLabel) pinLabel.textContent = a.pinned ? 'Saved' : 'Save';
+  }
+}
+
+function toggleExpand(btn) {
+  var p = btn.previousElementSibling;
+  if (!p || !p.classList.contains('item-summary')) return;
+  var expanded = p.classList.toggle('expanded');
+  btn.textContent = expanded ? 'Show less' : 'Read more';
+}
+
+function updateLog() {
+  var readList = [], skipList = [];
+  ARTICLES.forEach(function (a) {
+    var entry = a.title + ' [' + a.category + ']';
+    if (a.feedback === 'read') readList.push(entry);
+    if (a.feedback === 'skip') skipList.push(entry);
+  });
+  var log = document.getElementById('feedback-log');
+  if (log) {
+    log.innerHTML = 'Archived so far &mdash; Read: ' + (readList.length ? readList.join('; ') : 'none') + '. Skipped (used to tune future editions): ' + (skipList.length ? skipList.join('; ') : 'none') + '.';
+  }
+}
+
+function setStatus(text) {
+  var el = document.getElementById('sync-status');
+  if (el) el.textContent = text || '';
+}
+
+var PIN_SVG_SMALL = '<svg viewBox="0 0 24 24" width="10" height="10" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
+var PIN_SVG_BTN = '<svg class="pin-icon" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
+
+function renderArticleHTML(a) {
+  var fb = a.feedback || '';
+  var archived = a.archived ? 'true' : 'false';
+  var pinned = a.pinned ? 'true' : 'false';
+  var readActive = fb === 'read' ? ' active' : '';
+  var skipActive = fb === 'skip' ? ' active' : '';
+  var pinActive = a.pinned ? ' active' : '';
+  var pinLabel = a.pinned ? 'Saved' : 'Save';
+  return '    <article class="item" data-id="' + a.id + '" data-category="' + a.category + '" data-feedback="' + fb + '" data-archived="' + archived + '" data-pinned="' + pinned + '">\n' +
+    '      <div class="item-card">\n' +
+    '        <div class="item-meta"><span class="tag">' + a.tag + '</span><span>&middot;</span><span>' + a.source + '</span><span>&middot;</span><time>' + a.date + '</time><span class="archived-status"></span><span class="pin-indicator">' + PIN_SVG_SMALL + '</span></div>\n' +
+    '        <h2 class="item-title"><a href="' + a.url + '" target="_blank" rel="noopener">' + a.title + '</a></h2>\n' +
+    '        <p class="item-summary">' + a.summary + '</p>\n' +
+    '        <button class="expand-btn" onclick="toggleExpand(this)">Read more</button>\n' +
+    '        <div class="item-actions">\n' +
+    '          <button class="pin-btn' + pinActive + '" aria-label="Save for later" onclick="togglePin(\'' + a.id + '\')">' + PIN_SVG_BTN + '<span class="pin-label">' + pinLabel + '</span></button>\n' +
+    '          <button class="fb-btn' + skipActive + '" data-fb="skip" aria-label="Skip — fewer like this" onclick="setFeedback(\'' + a.id + '\',\'skip\')">&#10005; Skip</button>\n' +
+    '          <button class="undo-btn" aria-label="Undo" onclick="undoFeedback(\'' + a.id + '\')">&#8634; Undo</button>\n' +
+    '          <button class="fb-btn' + readActive + '" data-fb="read" aria-label="Mark as read" onclick="setFeedback(\'' + a.id + '\',\'read\')">&#10003; Read</button>\n' +
+    '        </div>\n' +
+    '      </div>\n' +
+    '    </article>';
+}
+
+function buildFullHtml() {
+  var updatedAtText = document.querySelector('.meta-row span').textContent;
+  var headHtml = JSON.parse(document.getElementById('head-style-src').textContent);
+  var appLogicSrc = document.getElementById('app-logic').textContent;
+  var feedHtml = ARTICLES.map(renderArticleHTML).join('\n\n');
+  var readList = [], skipList = [];
+  ARTICLES.forEach(function (a) {
+    var entry = a.title + ' [' + a.category + ']';
+    if (a.feedback === 'read') readList.push(entry);
+    if (a.feedback === 'skip') skipList.push(entry);
+  });
+  var logText = 'Archived so far &mdash; Read: ' + (readList.length ? readList.join('; ') : 'none') + '. Skipped (used to tune future editions): ' + (skipList.length ? skipList.join('; ') : 'none') + '.';
+  var articlesJson = JSON.stringify(ARTICLES).replace(/<\/script/gi, '<\\/script');
+
+  return '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Précis</title>' + headHtml + '</head><body>\n' +
+    '<div class="wrap">\n' +
+    '  <header class="masthead">\n' +
+    '    <h1 class="wordmark">Précis</h1>\n' +
+    '    <p class="tagline">Signal over noise.</p>\n' +
+    '    <div class="meta-row">\n' +
+    '      <span>' + updatedAtText + '</span>\n' +
+    '    </div>\n' +
+    '    <nav class="filters" id="filters">\n' +
+    '      <button class="filter-btn" data-cat="all" data-active="true" onclick="setFilter(\'all\', this)">All</button>\n' +
+    '      <span class="filter-btn filter-select-wrap">\n' +
+    '        <select class="filter-select" id="category-select" aria-label="Category" onchange="setFilter(this.value, this.parentElement)">\n' +
+    '          <option value="" disabled selected>Category</option>\n' +
+    '          <option value="biotech">Biotech</option>\n' +
+    '          <option value="health">Healthcare</option>\n' +
+    '          <option value="startup">Startups</option>\n' +
+    '          <option value="stocks">Stocks</option>\n' +
+    '          <option value="tech">Technology</option>\n' +
+    '          <option value="telecom">Telecom</option>\n' +
+    '        </select>\n' +
+    '      </span>\n' +
+    '      <button class="filter-btn" data-cat="pinned" onclick="setFilter(\'pinned\', this)">Saved</button>\n' +
+    '      <button class="filter-btn" data-cat="archive" onclick="setFilter(\'archive\', this)">Archive</button>\n' +
+    '    </nav>\n' +
+    '  </header>\n\n' +
+    '  <main class="feed" id="feed">\n\n' + feedHtml + '\n\n</main>\n\n' +
+    '  <footer class="notes">\n' +
+    '    <p id="feedback-log" style="margin-top:10px; font-family:\'Jost\', ui-monospace, monospace; font-size:11px;">' + logText + '</p>\n' +
+    '    <p id="sync-status" style="margin-top:4px; font-family:\'Jost\', ui-monospace, monospace; font-size:10px; color:var(--down);"></p>\n' +
+    '  </footer>\n' +
+    '</div>\n\n' +
+    '<script type="application/json" id="head-style-src">' + JSON.stringify(headHtml) + '<\/script>\n' +
+    '<script type="application/json" id="articles-data">' + articlesJson + '<\/script>\n' +
+    '<script id="app-logic">' + appLogicSrc + '<\/script>\n' +
+    '<script>var ARTICLES = JSON.parse(document.getElementById("articles-data").textContent); init();<\/script>\n' +
+    '</body></html>';
+}
+
+async function persist() {
+  try {
+    if (!window.claude || !window.claude.use) { setStatus('(not saved — sync unavailable)'); return; }
+    var artifact = await window.claude.use('artifact');
+    if (!artifact) { setStatus('(not saved — sync unavailable)'); return; }
+    var html = buildFullHtml();
+    await artifact.publish(html);
+    setStatus('');
+  } catch (err) {
+    if (err && err.code === 'conflict') {
+      setStatus('');
+    } else if (err && (err.code === 'not_writer' || err.code === 'not_granted')) {
+      setStatus('(read-only — changes not saved)');
+    } else {
+      setStatus('(not saved — try again)');
+      try { console.warn('Précis: publish failed', err); } catch (e) {}
+    }
+  }
+}
+
+function setFeedback(id, val) {
+  var a = findArticle(id); if (!a) return;
+  a.feedback = val; a.archived = true;
+  applyDom(a); updateLog(); persist();
+}
+function undoFeedback(id) {
+  var a = findArticle(id); if (!a) return;
+  a.feedback = ''; a.archived = false;
+  applyDom(a); updateLog(); persist();
+}
+function togglePin(id) {
+  var a = findArticle(id); if (!a) return;
+  a.pinned = !a.pinned;
+  applyDom(a); persist();
+}
+function setFilter(cat, btn) {
+  if (cat === 'all') {
+    document.body.removeAttribute('data-local-filter');
+  } else {
+    document.body.setAttribute('data-local-filter', cat);
+  }
+  var buttons = document.querySelectorAll('#filters .filter-btn');
+  for (var i = 0; i < buttons.length; i++) { buttons[i].removeAttribute('data-active'); }
+  btn.setAttribute('data-active', 'true');
+}
+function init() {
+  ARTICLES.forEach(applyDom);
+  updateLog();
+}<\/script>
+<script>var ARTICLES = JSON.parse(document.getElementById("articles-data").textContent); init();<\/script>
+</body></html>
