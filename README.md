@@ -1,13 +1,13 @@
-# Newsfeed
+# Herald
 
-Most news feeds forget you the moment you close the tab. Newsfeed doesn't.
+Most news feeds forget you the moment you close the tab. Herald doesn't.
 Every Read, Skip, and Save writes itself back into the page immediately, so
 the next visit picks up exactly where the last one left off. A daily pass
 adds new stories on top of the pile, never touching what you haven't gotten
 to, and prunes the read-and-skipped backlog on a cap while anything you've
 saved stays untouched, indefinitely.
 
-Newsfeed is a single self-contained HTML page, published as a Claude
+Herald is a single self-contained HTML page, published as a Claude
 Artifact, not a normal website. A scheduled Claude session fetches fresh
 stories once a day, folds them in on top of whatever you haven't acted on
 yet, and republishes the same page. Every click saves itself immediately
@@ -33,7 +33,7 @@ This repo has two pieces:
    Saved/Archive tabs all work before anything is scheduled.
 
 3. **Customize the template (optional, before or after step 1):**
-   - Rename it: change every `Newsfeed` occurrence in `template.html` (the
+   - Rename it: change every `Herald` occurrence in `template.html` (the
      `<title>`, the `<h1 class="wordmark">`) and in `daily-fetch-prompt.md`.
    - Change the tagline: edit `<p class="tagline">Signal over noise.</p>`.
    - Add or remove categories: each category needs a `--<name>` color

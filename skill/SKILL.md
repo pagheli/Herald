@@ -3,7 +3,7 @@ name: newsfeed
 description: Set up a personal, self-updating news feed as a Claude Artifact — a live page with Read/Skip/Save/Archive that a scheduled Claude session tops up daily.
 ---
 
-# Newsfeed skill
+# Herald skill
 
 See the repo's [`README.md`](../README.md) for the full description, setup
 steps, the self-save mechanism, the article data model, and design notes.
