@@ -20,23 +20,23 @@ This repo has two pieces:
 - `skill/daily-fetch-prompt.md` — the scheduled-task prompt that keeps it
   updated.
 
+
 ## Set it up
 
-1. **Publish the template.** Take `skill/template.html` and publish it as a
-   new Claude Artifact with the `artifact` capability declared
-   (`capabilities: {"artifact": {}}`), and pick a one- or two-emoji
-   favicon. Once published, note its `claude.ai/code/artifact/...` URL —
-   everything downstream needs it.
+### Publish the template
 
-2. **Try it.** Open the artifact. It ships with two starter cards so you can
-   confirm Save, Skip, Read, Undo, the Category dropdown, and the
-   Saved/Archive tabs all work before anything is scheduled.
+Take `skill/template.html` and publish it as a new Claude Artifact with the `artifact` capability declared (`capabilities: {"artifact": {}}`), and pick a one- or two-emoji favicon. Once published, note its `claude.ai/code/artifact/...` URL — everything downstream needs it.
 
-3. **Customize the template (optional, before or after step 1):**
-   - Rename it: change every `Herald` occurrence in `template.html` (the
+### Try it
+
+Open the artifact. It ships with two starter cards so you can confirm Save, Skip, Read, Undo, the Category dropdown, and the Saved/Archive tabs all work before anything is scheduled.
+
+### Customize the template (optional, before or after step 1)
+
+   - **Rename it:**  change every `Herald` occurrence in `template.html` (the
      `<title>`, the `<h1 class="wordmark">`) and in `daily-fetch-prompt.md`.
-   - Change the tagline: edit `<p class="tagline">Signal over noise.</p>`.
-   - Add or remove categories: each category needs a `--<name>` color
+   - **Change the tagline:** edit `<p class="tagline">Signal over noise.</p>`.
+   - **Add or remove categories:** each category needs a `--<name>` color
      variable in `:root` (and its dark-mode copy), a
      `.filter-btn[data-cat="<name>"] { --cat-color: var(--<name>); }` rule,
      an `.item[data-category="<name>"] { --cat-color: var(--<name>); }`
@@ -45,17 +45,14 @@ This repo has two pieces:
      `<option>` in the `#category-select` dropdown. Keep the category's
      internal slug lowercase and the display label (the `tag` field) as you
      want it shown.
-   - Change the favicon or accent colors: the `--accent` and related
+   - **Change the favicon or accent colors:** the `--accent` and related
      `--bg`/`--ink`/`--line` custom properties at the top of `<style>`
      control the whole palette, light and dark.
 
-4. **Set up the scheduled fetch.** Fill in the placeholders in
-   `skill/daily-fetch-prompt.md` (your artifact URL, product name, owner
-   name, recency window, archive cap, favicon, description — see that file
-   for the full list) and create a scheduled task with the filled-in
-   prompt. Run it once manually first to confirm it reads the live page,
-   fetches real stories, and republishes cleanly before trusting it to run
-   unattended.
+### Set up the scheduled fetch 
+
+Fill in the placeholders in `skill/daily-fetch-prompt.md` (your artifact URL, product name, owner name, recency window, archive cap, favicon, description — see that file for the full list) and create a scheduled task with the filled-in prompt. Run it once manually first to confirm it reads the live page, fetches real stories, and republishes cleanly before trusting it to run unattended.
+
 
 ## Why an Artifact, not a plain website
 
@@ -65,6 +62,7 @@ capability Claude Artifacts can declare. That capability is what lets a
 static-looking HTML page save a new version of itself when you click a
 button in it, and it only exists inside claude.ai, which is why this ships
 as a Claude Artifact rather than a file you host yourself.
+
 
 ## How the self-save mechanism works, if you're customizing the JS
 
@@ -81,6 +79,7 @@ structurally identical, or your next click will silently regenerate the
 page from the JS template and undo any structural change you made only to
 the static HTML side. If you edit the visual layout, change it in both
 places.
+
 
 ## Data model
 
@@ -100,12 +99,13 @@ places.
 }
 ```
 
-`feedback` is the only negative/positive-adjacent signal: `"skip"` is a
+> `feedback` is the only negative/positive-adjacent signal: `"skip"` is a
 negative preference the daily-fetch prompt uses to deprioritize similar
 future stories; `"read"` carries no preference at all. `pinned` (Save) is
 completely independent of `feedback`/`archived` — an article can be
 unread-and-saved, read-and-saved, or skipped-and-saved, and saved articles
 are exempt from the archive-size cap forever.
+
 
 ## Design
 
@@ -117,6 +117,7 @@ fetch to deprioritize similar stories). Save bookmarks an article
 independently of its read state and exempts it from the Archive's size cap.
 Both light and dark color schemes are defined, following the OS preference
 by default.
+
 
 ## License
 
