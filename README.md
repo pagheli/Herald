@@ -23,9 +23,10 @@ This requires a Claude client that can publish Artifacts with runtime capabiliti
 .
 ├── LICENSE
 ├── README.md
-└── skill/
-    ├── template.html            the page you publish as your first Artifact
-    └── daily-fetch-prompt.md    the scheduled-task prompt that keeps it updated
+└── herald/
+    ├── SKILL.md                  the Claude Skill manifest for this folder
+    ├── template.html             the page you publish as your first Artifact
+    └── daily-fetch-prompt.md     the scheduled-task prompt that keeps it updated
 ```
  
 
