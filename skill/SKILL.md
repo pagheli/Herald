@@ -35,7 +35,4 @@ itself up on a schedule. No server of your own.
   capability wired up already).
 - `daily-fetch-prompt.md` — the scheduled-task prompt template.
 
-This folder is self-contained: everything the setup steps above need is
-here. For the self-save mechanism, the article data model, and full
-design notes, see the repo's `README.md` if you have it alongside this
-folder.
+This folder is self-contained: everything the setup steps above need is here. For the self-save mechanism, the article data model, and full design notes, see the repo's `README.md` if you have it alongside this folder.

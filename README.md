@@ -1,18 +1,9 @@
 # Herald
 
-Most news feeds forget you the moment you close the tab. Herald doesn't.
-Every Read, Skip, and Save writes itself back into the page immediately, so
-the next visit picks up exactly where the last one left off. A daily pass
-adds new stories on top of the pile, never touching what you haven't gotten
-to, and prunes the read-and-skipped backlog on a cap while anything you've
-saved stays untouched, indefinitely.
+Most news feeds forget you the moment you close the tab. Herald doesn't. Every Read, Skip, and Save writes itself back into the page immediately, so the next visit picks up exactly where the last one left off. A daily pass adds new stories on top of the pile, never touching what you haven't gotten to, and prunes the read-and-skipped backlog on a cap while anything you've saved stays untouched, indefinitely.
 
 Herald is a single self-contained HTML page, published as a Claude
-Artifact, not a normal website. A scheduled Claude session fetches fresh
-stories once a day, folds them in on top of whatever you haven't acted on
-yet, and republishes the same page. Every click saves itself immediately
-through the artifact's own runtime — no scheduled run required for that
-part.
+Artifact, not a normal website. A scheduled Claude session fetches fresh stories once a day, folds them in on top of whatever you haven't acted on yet, and republishes the same page. Every click saves itself immediately through the artifact's own runtime. No scheduled run required for that part.
 
 This requires a Claude client that can publish Artifacts with runtime capabilities and run scheduled tasks (Claude Code, Cowork, or claude.ai with those features enabled). It will not work as a plain hosted webpage.
 
@@ -23,12 +14,14 @@ This requires a Claude client that can publish Artifacts with runtime capabiliti
 .
 ├── LICENSE
 ├── README.md
-└── herald/
+└── skill/
     ├── SKILL.md                  the Claude Skill manifest for this folder
     ├── daily-fetch-prompt.md     the scheduled-task prompt that keeps it updated
     └── template.html             the page you publish as your first Artifact
 ```
  
+> Herald is a self-contained Claude skill. For a quick start, copy [`skill/`](/skill/) folder into a Claude skills directory and name the copy `herald` there to install it as a Skill.
+
 
 ## Design
 
@@ -36,13 +29,13 @@ Six built-in categories (technology, stocks, healthcare, biotech, startups, tele
 by default.
 
 
-## Quick setup
+## Setup
 
-Two of these steps are things you ask Claude to do. Two are edits you make yourself to the files in `skill/`.
+Two of these steps are things you ask Claude to do. Two are edits you make yourself to the files in [`skill/`](/skill/).
 
 ### 1. Publish the template
 
-Take `skill/template.html` and publish it as a new Claude Artifact with the `artifact` capability declared (`capabilities: {"artifact": {}}`), and pick a one- or two-emoji favicon. Once published, note its `claude.ai/code/artifact/...` URL — everything downstream needs it.
+Take [`skill/template.html`](/skill/template.html) and publish it as a new Claude Artifact with the `artifact` capability declared (`capabilities: {"artifact": {}}`), and pick a one- or two-emoji favicon. Once published, note its `claude.ai/code/artifact/...` URL. everything downstream needs it.
 
 ### 2. Try it
 
@@ -50,7 +43,7 @@ Open the artifact at the URL from step 1. It ships with two starter cards so you
 
 ### 3. Customize the template (optional, before or after step 1)
 
-   - **Rename it:**  change every `Herald` occurrence in `template.html` (the
+   - **Rename it:**  change every `Herald` occurrence in [`template.html`](/skill/template.html) (the
      `<title>`, the `<h1 class="wordmark">`) and in `daily-fetch-prompt.md`.
    - **Change the tagline:** edit `<p class="tagline">Signal over noise.</p>`.
    - **Add or remove categories:** each category needs a `--<name>` color
@@ -68,7 +61,7 @@ Open the artifact at the URL from step 1. It ships with two starter cards so you
 
 ### 4. Set up the scheduled fetch 
 
-Fill in the placeholders in `skill/daily-fetch-prompt.md` (your artifact URL, product name, owner name, recency window, archive cap, favicon, description — see that file for the full list) and create a scheduled task with the filled-in prompt. Run it once manually first to confirm it reads the live page, fetches real stories, and republishes cleanly before trusting it to run unattended.
+Fill in the placeholders in [`skill/daily-fetch-prompt.md`](/skill/daily-fetch-prompt.md) (your artifact URL, product name, owner name, recency window, archive cap, favicon, description — see that file for the full list) and create a scheduled task with the filled-in prompt. Run it once manually first to confirm it reads the live page, fetches real stories, and republishes cleanly before trusting it to run unattended.
 
 
 ## Why an artifact, not a plain website
