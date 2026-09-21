@@ -1,4 +1,4 @@
-# Herald — daily-fetch scheduled-task prompt
+# Daily-Fetch Scheduled-Task Prompt
 
 This is the prompt to paste into a Claude scheduled task (Claude Code /
 Cowork "scheduled task", not a raw cron job) so it maintains your Herald
