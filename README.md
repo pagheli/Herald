@@ -19,8 +19,6 @@ This requires a Claude client that can publish Artifacts with runtime capabiliti
     ├── daily-fetch-prompt.md     the scheduled-task prompt that keeps it updated
     └── template.html             the page you publish as your first Artifact
 ```
- 
-> Herald is a self-contained Claude skill. For a quick start, copy [`skill/`](/skill/) folder into a Claude skills directory and name the copy `herald` there to install it as a Skill.
 
 
 ## Design
@@ -29,13 +27,21 @@ Six built-in categories (technology, stocks, healthcare, biotech, startups, tele
 by default.
 
 
-## Setup
+## Quick start
 
-Two of these steps are things you ask Claude to do. Two are edits you make yourself to the files in [`skill/`](/skill/).
+Herald is a self-contained Claude skill. For a quick start, copy [`skill/`](/skill/) folder into a Claude skills directory and name the copy `herald` there to install it as a Skill.
+
+
+## Step-by-step setup
 
 ### 1. Publish the template
 
-Take [`skill/template.html`](/skill/template.html) and publish it as a new Claude Artifact with the `artifact` capability declared (`capabilities: {"artifact": {}}`), and pick a one- or two-emoji favicon. Once published, note its `claude.ai/code/artifact/...` URL. everything downstream needs it.
+Take [`skill/template.html`](/skill/template.html) and publish it as a new Claude Artifact with the `artifact` capability declared (`capabilities: {"artifact": {}}`), and pick a one- or two-emoji favicon. Once published, note its `claude.ai/code/artifact/...` URL.
+
+**Claude prompt:**
+> Publish skill/template.html as a new Claude Artifact. Declare the artifact capability (capabilities: {"artifact": {}}) so the page can save its own state. Give it the icon <one word, e.g. newspaper>. Once it's published, give me the resulting claude.ai/code/artifact/... URL.
+
+Save that URL. Everything downstream needs it.
 
 ### 2. Try it
 
@@ -61,7 +67,7 @@ Open the artifact at the URL from step 1. It ships with two starter cards so you
 
 ### 4. Set up the scheduled fetch 
 
-Fill in the placeholders in [`skill/daily-fetch-prompt.md`](/skill/daily-fetch-prompt.md) (your artifact URL, product name, owner name, recency window, archive cap, favicon, description — see that file for the full list) and create a scheduled task with the filled-in prompt. Run it once manually first to confirm it reads the live page, fetches real stories, and republishes cleanly before trusting it to run unattended.
+Fill in the placeholders in [`skill/daily-fetch-prompt.md`](/skill/daily-fetch-prompt.md) yourself first (your artifact URL, product name, owner name, recency window, archive cap, favicon word, description; see that file for the full list). Then ask Claude to create a scheduled task using the filled-in prompt. Run it once manually first to confirm it reads the live page, fetches real stories, and republishes cleanly before trusting it to run unattended.
 
 
 ## Why an artifact, not a plain website
