@@ -21,6 +21,18 @@ This repo has two pieces:
   updated.
 
 
+## Design
+
+Six built-in categories (technology, stocks, healthcare, biotech, startups,
+telecom), each with its own accent color used consistently across the
+category filter, the article card border tint, and the tag label. Read and
+Skip move an article to the Archive tab (Skip additionally tells the daily
+fetch to deprioritize similar stories). Save bookmarks an article
+independently of its read state and exempts it from the Archive's size cap.
+Both light and dark color schemes are defined, following the OS preference
+by default.
+
+
 ## Quick Setup
 
 ### 1. Publish the template
@@ -105,18 +117,6 @@ future stories; `"read"` carries no preference at all. `pinned` (Save) is
 completely independent of `feedback`/`archived` — an article can be
 unread-and-saved, read-and-saved, or skipped-and-saved, and saved articles
 are exempt from the archive-size cap forever.
-
-
-## Design
-
-Six built-in categories (technology, stocks, healthcare, biotech, startups,
-telecom), each with its own accent color used consistently across the
-category filter, the article card border tint, and the tag label. Read and
-Skip move an article to the Archive tab (Skip additionally tells the daily
-fetch to deprioritize similar stories). Save bookmarks an article
-independently of its read state and exempts it from the Archive's size cap.
-Both light and dark color schemes are defined, following the OS preference
-by default.
 
 
 ## License
