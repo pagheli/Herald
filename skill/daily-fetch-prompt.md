@@ -1,7 +1,7 @@
-# Précis — daily-fetch scheduled-task prompt
+# Newsfeed — daily-fetch scheduled-task prompt
 
 This is the prompt to paste into a Claude scheduled task (Claude Code /
-Cowork "scheduled task", not a raw cron job) so it maintains your Précis
+Cowork "scheduled task", not a raw cron job) so it maintains your Newsfeed
 artifact automatically. It assumes you've already published `template.html`
 as a Claude Artifact with the `artifact` capability (see `SKILL.md`).
 
@@ -215,7 +215,7 @@ only after confirming you are not discarding newer viewer-made changes.
 
 ## Placeholders to fill in
 
-- `{{PRODUCT_NAME}}` — what you're calling your feed (e.g. "Précis").
+- `{{PRODUCT_NAME}}` — what you're calling your feed (e.g. "Newsfeed").
 - `{{OWNER_NAME}}` — your name, used in the GOAL line.
 - `{{ARTIFACT_URL}}` — the `claude.ai/code/artifact/...` URL from publishing
   `template.html` (see `SKILL.md`).

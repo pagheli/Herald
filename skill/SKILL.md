@@ -1,110 +1,17 @@
 ---
-name: precis
+name: newsfeed
 description: Set up a personal, self-updating news feed as a Claude Artifact — a live page with Read/Skip/Save/Archive that a scheduled Claude session tops up daily.
 ---
 
-# Précis — a personal news artifact
+# Newsfeed skill
 
-Précis is a single self-contained HTML page — published as a Claude Artifact,
-not a normal website — that shows a feed of articles you can mark Read,
-Skip, or Save, filter by category, and dig out of an Archive later. A
-scheduled Claude session fetches fresh stories once a day, folds them in on
-top of whatever you haven't acted on yet, and republishes the same page.
-Every click saves itself immediately through the artifact's own runtime, no
-scheduled run required for that part.
+See the repo's [`README.md`](../README.md) for the full description, setup
+steps, the self-save mechanism, the article data model, and design notes.
 
-This skill has two pieces:
+This folder holds the two files a setup actually needs:
 
-- `template.html` — the page to publish as your first Artifact.
-- `daily-fetch-prompt.md` — the scheduled-task prompt that keeps it updated.
-
-## Set it up
-
-1. **Publish the template.** Take `template.html` from this skill folder and
-   publish it as a new Claude Artifact with the `artifact` capability
-   declared (`capabilities: {"artifact": {}}`), and pick a one- or
-   two-emoji favicon. Once published, note its `claude.ai/code/artifact/...`
-   URL — everything downstream needs it.
-
-2. **Try it.** Open the artifact. It ships with two starter cards so you can
-   confirm Save / Skip / Read / Undo, the Category dropdown, and the
-   Saved/Archive tabs all work before anything is scheduled.
-
-3. **Customize the template (optional, before or after step 1):**
-   - Rename it: change every `Précis` occurrence in `template.html` (the
-     `<title>`, the `<h1 class="wordmark">`, and the two places in
-     `daily-fetch-prompt.md`).
-   - Change the tagline: edit `<p class="tagline">Signal over noise.</p>`.
-   - Add or remove categories: each category needs (a) a `--<name>` color
-     variable in `:root` (and its dark-mode copy), (b) a
-     `.filter-btn[data-cat="<name>"] { --cat-color: var(--<name>); }` rule,
-     (c) an `.item[data-category="<name>"] { --cat-color: var(--<name>); }`
-     rule, (d) a `body[data-local-filter="<name>"]
-     .item[data-category="<name>"] { display: flex; }` rule, and (e) an
-     `<option>` in the `#category-select` dropdown. Keep the category's
-     internal slug lowercase and the display label (the `tag` field) as you
-     want it shown.
-   - Change the favicon or accent colors: the `--accent` and related
-     `--bg`/`--ink`/`--line` custom properties at the top of `<style>`
-     control the whole palette, light and dark.
-
-4. **Set up the scheduled fetch.** Fill in the placeholders in
-   `daily-fetch-prompt.md` (your artifact URL, product name, owner name,
-   recency window, archive cap, favicon, description — see that file for
-   the full list) and create a scheduled task with the filled-in prompt.
-   Run it once manually first to confirm it reads the live page, fetches
-   real stories, and republishes cleanly before trusting it to run
-   unattended.
-
-## Why an Artifact and not a plain website
-
-The click-to-save behavior (Read/Skip/Save/Archive persisting instantly,
-with no server of your own) relies on the `artifact` runtime capability
-Claude Artifacts can declare — this is what lets a static-looking HTML page
-save a new version of itself when you click a button in it. That capability
-only exists inside claude.ai, which is why this is a Claude Artifact rather
-than a file you host yourself. If you want the same UI without any Claude
-dependency (at the cost of losing the automatic daily fetch and cross-device
-sync), see `../web/` for a decoupled version built on plain `localStorage`.
-
-## How the self-save mechanism works, if you're customizing the JS
-
-Every published version of the page embeds three `<script>` blocks: the
-current article data as JSON (`#articles-data`), the interaction logic
-verbatim (`#app-logic`), and a one-line bootstrap that parses the JSON into
-an `ARTICLES` array and calls `init()`. Clicking Read, Skip, Save, or Undo
-calls `persist()`, which rebuilds the *entire* HTML document from the
-in-memory `ARTICLES` array (via `buildFullHtml()`) and calls
-`artifact.publish(html)` on it — the whole document is replaced on every
-click, not patched. That means the static `<main class="feed">` markup and
-the `renderArticleHTML()` / `buildFullHtml()` JavaScript template must stay
-structurally identical, or your next click will silently regenerate the
-page from the JS template and undo any structural change you made only to
-the static HTML side. If you edit the visual layout, change it in both
-places (or drive the static HTML by hand-editing `template.html` and let
-`renderArticleHTML()` mirror it exactly).
-
-## Data model
-
-```json
-{
-  "id": "unique-string",
-  "category": "tech | stocks | health | biotech | startup | telecom",
-  "tag": "Technology | Stocks | Healthcare | Biotech | Startups | Telecom",
-  "source": "Publication name",
-  "date": "Display string, e.g. \"Sep 16\"",
-  "title": "Headline",
-  "url": "https://...",
-  "summary": "A few sentences of context.",
-  "feedback": "" ,
-  "archived": false,
-  "pinned": false
-}
-```
-
-`feedback` is the only negative/positive-adjacent signal: `"skip"` is a
-negative preference the daily-fetch prompt uses to deprioritize similar
-future stories; `"read"` carries no preference at all. `pinned` (Save) is
-completely independent of `feedback`/`archived` — an article can be
-unread-and-saved, read-and-saved, or skipped-and-saved, and saved articles
-are exempt from the archive-size cap forever.
+- `template.html` — the starter page to publish as your first Claude
+  Artifact (has the `artifact` capability wired up already).
+- `daily-fetch-prompt.md` — the scheduled-task prompt that fetches fresh
+  stories once a day and republishes the page, with placeholders for your
+  artifact URL, product name, and a few tunable settings.
