@@ -14,26 +14,30 @@ yet, and republishes the same page. Every click saves itself immediately
 through the artifact's own runtime — no scheduled run required for that
 part.
 
-This repo has two pieces:
+This requires a Claude client that can publish Artifacts with runtime capabilities and run scheduled tasks (Claude Code, Cowork, or claude.ai with those features enabled). It will not work as a plain hosted webpage.
 
-- `skill/template.html` — the page to publish as your first Artifact.
-- `skill/daily-fetch-prompt.md` — the scheduled-task prompt that keeps it
-  updated.
 
+## Contents
+ 
+```
+.
+├── LICENSE
+├── README.md
+└── skill/
+    ├── template.html            the page you publish as your first Artifact
+    └── daily-fetch-prompt.md    the scheduled-task prompt that keeps it updated
+```
+ 
 
 ## Design
 
-Six built-in categories (technology, stocks, healthcare, biotech, startups,
-telecom), each with its own accent color used consistently across the
-category filter, the article card border tint, and the tag label. Read and
-Skip move an article to the Archive tab (Skip additionally tells the daily
-fetch to deprioritize similar stories). Save bookmarks an article
-independently of its read state and exempts it from the Archive's size cap.
-Both light and dark color schemes are defined, following the OS preference
+Six built-in categories (technology, stocks, healthcare, biotech, startups, telecom), each with its own accent color used consistently across the category filter, the article card border tint, and the tag label. Read and Skip move an article to the Archive tab (Skip additionally tells the daily fetch to deprioritize similar stories). Save bookmarks an article independently of its read state and exempts it from the Archive's size cap. Both light and dark color schemes are defined, following the OS preference
 by default.
 
 
-## Quick Setup
+## Quick setup
+
+Two of these steps are things you ask Claude to do. Two are edits you make yourself to the files in `skill/`.
 
 ### 1. Publish the template
 
@@ -41,7 +45,7 @@ Take `skill/template.html` and publish it as a new Claude Artifact with the `art
 
 ### 2. Try it
 
-Open the artifact. It ships with two starter cards so you can confirm Save, Skip, Read, Undo, the Category dropdown, and the Saved/Archive tabs all work before anything is scheduled.
+Open the artifact at the URL from step 1. It ships with two starter cards so you can confirm Save, Skip, Read, Undo, the Category dropdown, and the Saved/Archive tabs all work before anything is scheduled.
 
 ### 3. Customize the template (optional, before or after step 1)
 
@@ -66,34 +70,17 @@ Open the artifact. It ships with two starter cards so you can confirm Save, Skip
 Fill in the placeholders in `skill/daily-fetch-prompt.md` (your artifact URL, product name, owner name, recency window, archive cap, favicon, description — see that file for the full list) and create a scheduled task with the filled-in prompt. Run it once manually first to confirm it reads the live page, fetches real stories, and republishes cleanly before trusting it to run unattended.
 
 
-## Why An Artifact, Not A Plain Website
+## Why an artifact, not a plain website
 
-The click-to-save behavior — Read, Skip, Save, and Archive persisting
-instantly, with no server of your own — relies on the `artifact` runtime
-capability Claude Artifacts can declare. That capability is what lets a
-static-looking HTML page save a new version of itself when you click a
-button in it, and it only exists inside claude.ai, which is why this ships
-as a Claude Artifact rather than a file you host yourself.
+The click-to-save behavior — Read, Skip, Save, and Archive persisting instantly, with no server of your own — relies on the `artifact` runtime capability Claude Artifacts can declare. That capability is what lets a static-looking HTML page save a new version of itself when you click a button in it, and it only exists inside claude.ai, which is why this ships as a Claude Artifact rather than a file you host yourself.
 
 
-## How the Self-Save Mechanism Works
+## How the self-save mechanism works
 
-Every published version of the page embeds three `<script>` blocks: the
-current article data as JSON (`#articles-data`), the interaction logic
-verbatim (`#app-logic`), and a one-line bootstrap that parses the JSON into
-an `ARTICLES` array and calls `init()`. Clicking Read, Skip, Save, or Undo
-calls `persist()`, which rebuilds the *entire* HTML document from the
-in-memory `ARTICLES` array (via `buildFullHtml()`) and calls
-`artifact.publish(html)` on it — the whole document is replaced on every
-click, not patched. That means the static `<main class="feed">` markup and
-the `renderArticleHTML()` / `buildFullHtml()` JavaScript template must stay
-structurally identical, or your next click will silently regenerate the
-page from the JS template and undo any structural change you made only to
-the static HTML side. If you edit the visual layout, change it in both
-places.
+Every published version of the page embeds three `<script>` blocks: the current article data as JSON (`#articles-data`), the interaction logic verbatim (`#app-logic`), and a one-line bootstrap that parses the JSON into an `ARTICLES` array and calls `init()`. Clicking Read, Skip, Save, or Undo calls `persist()`, which rebuilds the *entire* HTML document from the in-memory `ARTICLES` array (via `buildFullHtml()`) and calls `artifact.publish(html)` on it — the whole document is replaced on every click, not patched. That means the static `<main class="feed">` markup and the `renderArticleHTML()` / `buildFullHtml()` JavaScript template must stay structurally identical, or your next click will silently regenerate the page from the JS template and undo any structural change you made only to the static HTML side. If you edit the visual layout, change it in both places.
 
 
-## Data Model
+## Data model
 
 ```json
 {
@@ -111,12 +98,7 @@ places.
 }
 ```
 
-> `feedback` is the only negative/positive-adjacent signal: `"skip"` is a
-negative preference the daily-fetch prompt uses to deprioritize similar
-future stories; `"read"` carries no preference at all. `pinned` (Save) is
-completely independent of `feedback`/`archived` — an article can be
-unread-and-saved, read-and-saved, or skipped-and-saved, and saved articles
-are exempt from the archive-size cap forever.
+> `feedback` is the only negative/positive-adjacent signal: `"skip"` is a negative preference the daily-fetch prompt uses to deprioritize similar future stories; `"read"` carries no preference at all. `pinned` (Save) is completely independent of `feedback`/`archived` — an article can be unread-and-saved, read-and-saved, or skipped-and-saved, and saved articles are exempt from the archive-size cap forever.
 
 
 ## License
