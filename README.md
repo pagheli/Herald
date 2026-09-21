@@ -36,12 +36,12 @@ Herald is a self-contained Claude skill. For a quick start, copy [`skill/`](/ski
 
 ### 1. Publish the template
 
-Take [`skill/template.html`](/skill/template.html) and publish it as a new Claude Artifact with the `artifact` capability declared (`capabilities: {"artifact": {}}`), and pick a one- or two-emoji favicon. Once published, note its `claude.ai/code/artifact/...` URL.
-
+Publish [`skill/template.html`](/skill/template.html) as a new Claude Artifact with the `artifact` capability declared (`capabilities: {"artifact": {}}`), and give it a one-word icon (the Artifact tool's icon field takes a plain word, not an emoji, so "newspaper" or "globe" work; an emoji doesn't). Once published, note its `claude.ai/code/artifact/...` URL.
+ 
 **Claude prompt:**
 > Publish skill/template.html as a new Claude Artifact. Declare the artifact capability (capabilities: {"artifact": {}}) so the page can save its own state. Give it the icon <one word, e.g. newspaper>. Once it's published, give me the resulting claude.ai/code/artifact/... URL.
 
-Save that URL. Everything downstream needs it.
+Save the artifact URL. Everything downstream needs it.
 
 ### 2. Try it
 
