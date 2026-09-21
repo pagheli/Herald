@@ -21,17 +21,17 @@ This repo has two pieces:
   updated.
 
 
-## Set it up
+## Quick Setup
 
-### Publish the template
+### 1. Publish the template
 
 Take `skill/template.html` and publish it as a new Claude Artifact with the `artifact` capability declared (`capabilities: {"artifact": {}}`), and pick a one- or two-emoji favicon. Once published, note its `claude.ai/code/artifact/...` URL — everything downstream needs it.
 
-### Try it
+### 2. Try it
 
 Open the artifact. It ships with two starter cards so you can confirm Save, Skip, Read, Undo, the Category dropdown, and the Saved/Archive tabs all work before anything is scheduled.
 
-### Customize the template (optional, before or after step 1)
+### 3. Customize the template (optional, before or after step 1)
 
    - **Rename it:**  change every `Herald` occurrence in `template.html` (the
      `<title>`, the `<h1 class="wordmark">`) and in `daily-fetch-prompt.md`.
@@ -49,12 +49,12 @@ Open the artifact. It ships with two starter cards so you can confirm Save, Skip
      `--bg`/`--ink`/`--line` custom properties at the top of `<style>`
      control the whole palette, light and dark.
 
-### Set up the scheduled fetch 
+### 4. Set up the scheduled fetch 
 
 Fill in the placeholders in `skill/daily-fetch-prompt.md` (your artifact URL, product name, owner name, recency window, archive cap, favicon, description — see that file for the full list) and create a scheduled task with the filled-in prompt. Run it once manually first to confirm it reads the live page, fetches real stories, and republishes cleanly before trusting it to run unattended.
 
 
-## Why an Artifact, not a plain website
+## Why An Artifact, Not A Plain Website
 
 The click-to-save behavior — Read, Skip, Save, and Archive persisting
 instantly, with no server of your own — relies on the `artifact` runtime
@@ -64,7 +64,7 @@ button in it, and it only exists inside claude.ai, which is why this ships
 as a Claude Artifact rather than a file you host yourself.
 
 
-## How the self-save mechanism works, if you're customizing the JS
+## How the Self-Save Mechanism Works
 
 Every published version of the page embeds three `<script>` blocks: the
 current article data as JSON (`#articles-data`), the interaction logic
@@ -81,7 +81,7 @@ the static HTML side. If you edit the visual layout, change it in both
 places.
 
 
-## Data model
+## Data Model
 
 ```json
 {
