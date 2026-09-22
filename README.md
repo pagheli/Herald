@@ -26,9 +26,9 @@ This requires a Claude client that can publish Artifacts with runtime capabiliti
 Six built-in categories (technology, stocks, healthcare, biotech, startups, telecom), each with its own accent color used consistently across the category filter, the article card border tint, and the tag label. Read and Skip move an article to the Archive tab (Skip additionally tells the daily fetch to deprioritize similar stories). Save bookmarks an article independently of its read state and exempts it from the Archive's size cap. Both light and dark color schemes are defined, following the OS preference by default.
 
 
-## Quick start
+## Quick setup
 
-Herald is a self-contained Claude Skill. For a quick start, copy [`skill/`](/skill/) folder into a Claude skills directory and name the copy `herald` there to install it as a skill.
+Herald is a self-contained Claude Skill. For a quick setup, copy [`skill/`](/skill/) folder into a Claude skills directory and name the copy `herald` there to install it as a skill.
 
 
 ## Step-by-step setup
