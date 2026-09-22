@@ -74,7 +74,7 @@ The click-to-save behavior — Read, Skip, Save, and Archive persisting instantl
 
 ## How the self-save mechanism works
 
-Every published version of the page embeds three `<script>` blocks: the current article data as JSON (`#articles-data`), the interaction logic verbatim (`#app-logic`), and a one-line bootstrap that parses the JSON into an `ARTICLES` array and calls `init()`. Clicking Read, Skip, Save, or Undo calls `persist()`, rebuilding the entire HTML document from the in-memory `ARTICLES` array (via `buildFullHtml()`) and calls `artifact.publish(html)` on it. 
+Every published version of the page embeds three `<script>` blocks: the current article data as JSON (`#articles-data`), the interaction logic verbatim (`#app-logic`), and a one-line bootstrap that parses the JSON into an `ARTICLES` array and calls `init()`. Clicking Read, Skip, Save, or Undo calls `persist()`, which rebuilds the entire HTML document from the in-memory `ARTICLES` array (via `buildFullHtml()`) and calls `artifact.publish(html)` on it. 
 
 The whole document is replaced on every click, not patched. That means the static `<main class="feed">` markup and the `renderArticleHTML()` / `buildFullHtml()` JavaScript template must stay structurally identical, or your next click will silently regenerate the page from the JS template and undo any structural change you made only to the static HTML side.
 
