@@ -102,4 +102,6 @@ The whole document is replaced on every click, not patched. That means the stati
 
 ## License
 
-MIT (see [`LICENSE`](/LICENSE)).
+This repository is licensed under the [MIT License](https://spdx.org/licenses/MIT.html).
+
+> This means you are free to use, modify, and distribute it, with or without modification, provided you retain the original copyright notice. See the [`LICENSE`](/LICENSE) file for the full terms.
