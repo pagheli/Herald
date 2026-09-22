@@ -28,7 +28,7 @@ Six built-in categories (technology, stocks, healthcare, biotech, startups, tele
 
 ## Quick start
 
-Herald is a self-contained Claude skill. For a quick start, copy [`skill/`](/skill/) folder into a Claude skills directory and name the copy `herald` there to install it as a Skill.
+Herald is a self-contained Claude Skill. For a quick start, copy [`skill/`](/skill/) folder into a Claude skills directory and name the copy `herald` there to install it as a skill.
 
 
 ## Step-by-step setup
@@ -57,9 +57,7 @@ Open the artifact at the URL from step 1. It ships with two starter cards so you
      an `.item[data-category="<name>"] { --cat-color: var(--<name>); }`
      rule, a `body[data-local-filter="<name>"]
      .item[data-category="<name>"] { display: flex; }` rule, and an
-     `<option>` in the `#category-select` dropdown. Keep the category's
-     internal slug lowercase and the display label (the `tag` field) as you
-     want it shown.
+     `<option>` in the `#category-select` dropdown. 
    - **Change the favicon or accent colors:** the `--accent` and related
      `--bg`/`--ink`/`--line` custom properties at the top of `<style>`
      control the whole palette, light and dark.
@@ -76,7 +74,7 @@ The click-to-save behavior — Read, Skip, Save, and Archive persisting instantl
 
 ## How the self-save mechanism works
 
-Every published version of the page embeds three `<script>` blocks: the current article data as JSON (`#articles-data`), the interaction logic verbatim (`#app-logic`), and a one-line bootstrap that parses the JSON into an `ARTICLES` array and calls `init()`. Clicking Read, Skip, Save, or Undo calls `persist()`, which rebuilds the *entire* HTML document from the in-memory `ARTICLES` array (via `buildFullHtml()`) and calls `artifact.publish(html)` on it. The whole document is replaced on every click, not patched. That means the static `<main class="feed">` markup and the `renderArticleHTML()` / `buildFullHtml()` JavaScript template must stay structurally identical, or your next click will silently regenerate the page from the JS template and undo any structural change you made only to the static HTML side. If you edit the visual layout, change it in both places.
+Every published version of the page embeds three `<script>` blocks: the current article data as JSON (`#articles-data`), the interaction logic verbatim (`#app-logic`), and a one-line bootstrap that parses the JSON into an `ARTICLES` array and calls `init()`. Clicking Read, Skip, Save, or Undo calls `persist()`, which rebuilds the entire HTML document from the in-memory `ARTICLES` array (via `buildFullHtml()`) and calls `artifact.publish(html)` on it. The whole document is replaced on every click, not patched. That means the static `<main class="feed">` markup and the `renderArticleHTML()` / `buildFullHtml()` JavaScript template must stay structurally identical, or your next click will silently regenerate the page from the JS template and undo any structural change you made only to the static HTML side.
 
 
 ## Data model
